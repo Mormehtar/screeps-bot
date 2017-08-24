@@ -4,7 +4,8 @@
   "description": "Bot for Screeps game.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "pull": "node ./node_modules/.bin/screeps-commander -c pull",
+    "push": "node ./node_modules/.bin/screeps-commander -c push"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/Mormehtar/screeps-bot/issues"
   },
-  "homepage": "https://github.com/Mormehtar/screeps-bot#readme"
+  "homepage": "https://github.com/Mormehtar/screeps-bot#readme",
+  "dependencies": {
+    "screeps-commander": "^1.0.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.5.0",
+    "eslint-plugin-screeps": "^1.1.0"
+  }
 }

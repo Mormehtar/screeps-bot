@@ -1,0 +1,10 @@
+{
+  "plugins": [
+    "screeps"
+  ],
+  "env": {
+    "screeps/screeps": true,
+    "es6": true,
+    "node": true
+  }
+}
