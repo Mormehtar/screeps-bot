@@ -10,3 +10,21 @@ Room.prototype.getSources = function () {
     }
     return this._sources;
 };
+
+Object.defineProperty(Room.prototype, 'creeps', {
+  get: function () {
+    return Game._creepsByRoom(this.name);
+  },
+  enumerable: false
+});
+
+Object.defineProperty(Creep.prototype, 'state', {
+  get: function() {
+    return this.memory.state || 'InitialDevelop';
+  },
+  set: function(state) {
+    console.log(`${this.name} goes for ${state}.`);
+    this.memory.state = state;
+  },
+  enumerable: false
+});
