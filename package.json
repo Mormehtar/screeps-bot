@@ -18,11 +18,8 @@
   },
   "homepage": "https://github.com/Mormehtar/screeps-bot#readme",
   "dependencies": {
-    "globals-for-screeps": "github:Mormehtar/globals-for-screeps",
+    "globals-for-screeps": "^1.0.1",
     "screeps-commander": "^1.0.2"
   },
-  "devDependencies": {
-    "eslint": "^4.5.0",
-    "eslint-plugin-screeps": "^1.1.0"
-  }
+  "devDependencies": {}
 }
