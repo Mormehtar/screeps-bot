@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/Mormehtar/screeps-bot#readme",
   "dependencies": {
+    "globals-for-screeps": "github:Mormehtar/globals-for-screeps",
     "screeps-commander": "^1.0.2"
   },
   "devDependencies": {
