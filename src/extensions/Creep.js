@@ -5,8 +5,7 @@ Object.defineProperty(Creep.prototype, 'isFull', {
         }
         return this._isFull;
     },
-    enumerable: false,
-    configurable: true
+    enumerable: false
 });
 
 Object.defineProperty(Creep.prototype, 'state', {
@@ -17,6 +16,5 @@ Object.defineProperty(Creep.prototype, 'state', {
         console.log(`${this.name} goes for ${state}.`);
         this.memory.state = state;
     },
-    enumerable: false,
-    configurable: true
+    enumerable: false
 });
