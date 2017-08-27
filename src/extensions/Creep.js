@@ -1,24 +1,26 @@
 const controllerFactory = require('../creepControllers/factory');
 
 Object.defineProperty(Creep.prototype, 'isFull', {
-    get: function() {
-        if (!this._isFull) {
-            this._isFull = _.sum(this.carry) === this.carryCapacity;
-        }
-        return this._isFull;
-    },
-    enumerable: false
+  get: function() {
+      if (!this._isFull) {
+          this._isFull = _.sum(this.carry) === this.carryCapacity;
+      }
+      return this._isFull;
+  },
+  enumerable: false,
+  configurable: true
 });
 
 Object.defineProperty(Creep.prototype, 'state', {
-    get: function() {
-        return this.memory.state;
-    },
-    set: function(state) {
-        console.log(`${this.name} goes for ${state}.`);
-        this.memory.state = state;
-    },
-    enumerable: false
+  get: function() {
+      return this.memory.state;
+  },
+  set: function(state) {
+      console.log(`${this.name} goes for ${state}.`);
+      this.memory.state = state;
+  },
+  enumerable: false,
+  configurable: true
 });
 
 Object.defineProperty(Creep.prototype, 'target', {
@@ -40,7 +42,8 @@ Object.defineProperty(Creep.prototype, 'target', {
       this.memory.targetId = target.id;
     }
   },
-  enumerable: false
+  enumerable: false,
+  configurable: true
 });
 
 Creep.prototype.getController = function() {

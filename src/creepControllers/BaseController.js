@@ -1,4 +1,4 @@
-module.exports = class BaseController {
+class BaseController {
   constructor(creep) {
     this.creep = creep;
   }
@@ -6,6 +6,8 @@ module.exports = class BaseController {
   static getMethodForState(state) {
     return `${BaseController._prefix}${state}`;
   }
-};
+}
 
 BaseController._prefix = '_run';
+
+module.exports = BaseController;

@@ -2,7 +2,7 @@ const BaseController = require('./BaseController');
 const creepControllerFactory = require('../creepControllers/factory');
 const WorkerController = require('../creepControllers/WorkerController');
 
-module.exports = class InitialDevelopController extends BaseController {
+class InitialDevelopController extends BaseController {
   getSourcePower() {
     if (!this._sourcePower) {
       this._sourcePower = this.room.getSources()
@@ -39,7 +39,7 @@ module.exports = class InitialDevelopController extends BaseController {
     }
     return workerRole;
   }
-};
+}
 
 InitialDevelopController.ROLES = {
   WORKER: 'Worker'
@@ -48,3 +48,5 @@ InitialDevelopController.ROLES = {
 creepControllerFactory.register(InitialDevelopController.ROLES.WORKER, WorkerController);
 
 InitialDevelopController.UPGRADE_COEFFICIENT = 1.5;
+
+module.exports = InitialDevelopController;

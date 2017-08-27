@@ -1,7 +1,7 @@
 const BaseController = require('./BaseController');
 const constants = require('../constants');
 
-module.exports = class WorkerController extends BaseController {
+class WorkerController extends BaseController {
   run() {
     if (this.creep.spawning) { return null; }
     if (this.creep.carry[RESOURCE_ENERGY] === 0) { this.creep.state = WorkerController.States.GoForEnergy; }
@@ -80,3 +80,5 @@ WorkerController.prototype[WorkerController.getMethodForState(WorkerController.S
   }
   this.creep.harvest(this.creep.target);
 };
+
+module.exports = WorkerController;

@@ -4,7 +4,9 @@ utils.addMemory(Source);
 
 Object.defineProperty(Source.prototype, 'creeps', {
   get() { return this.memory._creeps || 0; },
-  set(value) { this.memory._creeps = value; }
+  set(value) { this.memory._creeps = value; },
+  enumerable: false,
+  configurable: true
 });
 
 Object.defineProperty(Source.prototype, 'freeSpaceCount', {
@@ -24,7 +26,8 @@ Object.defineProperty(Source.prototype, 'freeSpaceCount', {
     }
     return this._freeSpaceCount;
   },
-  enumerable: false
+  enumerable: false,
+  configurable: true
 });
 
 Object.defineProperty(Source.prototype, 'creeps', {
@@ -33,5 +36,7 @@ Object.defineProperty(Source.prototype, 'creeps', {
   },
   set: function (value) {
     this.memory.creeps = value;
-  }
+  },
+  enumerable: false,
+  configurable: true
 });
