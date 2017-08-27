@@ -1,3 +1,5 @@
+const controllerFactory = require('../roomControllers/factory');
+
 Room.prototype.getSources = function () {
     if (!this._sources) {
         const sourceIds = this.memory.sourceIds;
@@ -11,9 +13,19 @@ Room.prototype.getSources = function () {
     return this._sources;
 };
 
+Object.prototype.getController = function() {
+  return controllerFactory(this);
+};
+
 Object.defineProperty(Room.prototype, 'creeps', {
   get: function () {
-    return Game._creepsByRoom(this.name);
+    return Game.getCreepsByRoom(this.name);
+  },
+  enumerable: false
+});
+Object.defineProperty(Room.prototype, 'spawns', {
+  get: function () {
+    return Game.getSpawnsByRoom(this.name);
   },
   enumerable: false
 });

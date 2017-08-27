@@ -1,4 +1,4 @@
-module.exports.AddMemory = function (constructor, key = null, prop = 'memory') {
+module.exports.addMemory = function (constructor, key = null, prop = 'memory') {
   const _key = key || constructor.name;
   Object.defineProperty(constructor.prototype, prop, {
     get: function() {
@@ -22,5 +22,4 @@ module.exports.AddMemory = function (constructor, key = null, prop = 'memory') {
     },
     enumerable: false
   });
-
 };
