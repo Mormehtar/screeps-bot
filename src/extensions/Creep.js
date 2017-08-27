@@ -16,8 +16,8 @@ Object.defineProperty(Creep.prototype, 'state', {
       return this.memory.state;
   },
   set: function(state) {
-      console.log(`${this.name} goes for ${state}.`);
-      this.memory.state = state;
+    console.log(`${this.name} goes for ${state}.`);
+    this.memory.state = state;
   },
   enumerable: false,
   configurable: true
@@ -46,12 +46,12 @@ Object.defineProperty(Creep.prototype, 'target', {
   configurable: true
 });
 
-Creep.prototype.getController = function() {
-  return controllerFactory.getInstance(this);
-};
-
 Creep.prototype.chooseSource = function () {
   return _.sortBy(this.room.getSources().filter(source => source.freeSpaceCount - source.creeps > 0), [
     source => - source.energy / source.ticksToRegeneration
   ])[0];
+};
+
+Creep.prototype.getCreepController = function() {
+  return controllerFactory.getInstance(this);
 };

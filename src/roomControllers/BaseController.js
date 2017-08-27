@@ -3,7 +3,7 @@ class BaseRoomController {
     this.room = room;
   }
   controlCreeps() {
-    (this.room.creeps || []).forEach(creep => creep.getController().run());
+    (this.room.creeps || []).forEach(creep => creep.getCreepController().run());
   }
   calculatePopulation() {
     if (!this.population) {

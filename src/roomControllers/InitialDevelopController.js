@@ -18,7 +18,7 @@ class InitialDevelopController extends BaseController {
       let maxPrice = this.room.energyCapacityAvailable;
       const crate = Math.floor(maxPrice / price);
       this._workerBody = [].concat(
-        _.fill(new Array(crate), CARRY), _.fill(new Array(crate), WORK), _.fill(new Array(crate), CARRY)
+        _.fill(new Array(crate), CARRY), _.fill(new Array(crate), WORK), _.fill(new Array(crate), MOVE)
       );
       this._workerPrice = price * crate;
       this._upgradePower = crate;

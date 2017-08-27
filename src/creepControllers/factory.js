@@ -8,7 +8,7 @@ class CreepControllerFactory {
   }
 
   getInstance(creep) {
-    const Controller = creep.memory.role;
+    const Controller = this._roles[creep.memory.role];
     if (!Controller) { throw new Error(`Controller for role ${creep.memory.role} is not registered`); }
     return new Controller(creep);
   }

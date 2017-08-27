@@ -4,8 +4,11 @@ const constants = require('../constants');
 class WorkerController extends BaseController {
   run() {
     if (this.creep.spawning) { return null; }
-    if (this.creep.carry[RESOURCE_ENERGY] === 0) { this.creep.state = WorkerController.States.GoForEnergy; }
-    while(this[WorkerController.getMethodForState(this.creep.state)]);
+    if (this.creep.carry[RESOURCE_ENERGY] === 0 && this.creep.state !== WorkerController.States.GoForEnergy) {
+      this.creep.target = null;
+      this.creep.state = WorkerController.States.GoForEnergy;
+    }
+    while(this[WorkerController.getMethodForState(this.creep.state)]()) {}
   }
 
   chooseTarget() {
@@ -14,7 +17,7 @@ class WorkerController extends BaseController {
     }
     return WorkerController.States.GoForController;
   }
-};
+}
 
 WorkerController.States = {
   GoForEnergy: 'GoForEnergy',
@@ -24,8 +27,9 @@ WorkerController.States = {
   UpgradeController: 'UpgradeController'
 };
 
-WorkerController.prototype[WorkerController.getMethodForState(WorkerController.States.GoForController)] = function () {
+WorkerController.prototype[WorkerController.getMethodForState(WorkerController.States.UpgradeController)] = function () {
   this.creep.upgradeController(this.creep.room.controller);
+  return false;
 };
 
 WorkerController.prototype[WorkerController.getMethodForState(WorkerController.States.GoForController)] = function () {
@@ -34,13 +38,14 @@ WorkerController.prototype[WorkerController.getMethodForState(WorkerController.S
     return true;
   }
   this.creep.moveTo(this.creep.room.controller);
+  return false;
 };
 
 WorkerController.prototype[WorkerController.getMethodForState(WorkerController.States.GoForSpawn)] = function () {
   if (!this.creep.target) {
-    this.creep.target = this.creep.room.findClosestByPath(FIND_MY_SPAWNS);
+    this.creep.target = this.creep.pos.findClosestByPath(FIND_MY_SPAWNS);
   }
-  if (this.creep.pos.isNear(this.creep.target)) {
+  if (this.creep.pos.isNearTo(this.creep.target)) {
     if (this.creep.room.energyCapacityAvailable === this.creep.room.energyAvailable) {
       this.creep.target = null;
       this.creep.state = this.chooseTarget();
@@ -48,12 +53,15 @@ WorkerController.prototype[WorkerController.getMethodForState(WorkerController.S
     }
     this.creep.transfer(
       this.creep.target,
+      RESOURCE_ENERGY,
       Math.min(
         this.creep.carry[RESOURCE_ENERGY],
         this.creep.room.energyCapacityAvailable - this.creep.room.energyAvailable
       )
     );
+    return false;
   }
+  this.creep.moveTo(this.creep.target);
 };
 
 WorkerController.prototype[WorkerController.getMethodForState(WorkerController.States.GoForEnergy)] = function () {
@@ -64,11 +72,12 @@ WorkerController.prototype[WorkerController.getMethodForState(WorkerController.S
     }
     this.creep.target.creeps += 1;
   }
-  if(this.creep.pos.isNear(this.creep.target)) {
+  if(this.creep.pos.isNearTo(this.creep.target)) {
     this.creep.state = WorkerController.States.Harvest;
     return true;
   }
   this.creep.moveTo(this.creep.target);
+  return false;
 };
 
 WorkerController.prototype[WorkerController.getMethodForState(WorkerController.States.Harvest)] = function () {
@@ -79,6 +88,7 @@ WorkerController.prototype[WorkerController.getMethodForState(WorkerController.S
     return true;
   }
   this.creep.harvest(this.creep.target);
+  return false;
 };
 
 module.exports = WorkerController;
