@@ -47,9 +47,14 @@ Object.defineProperty(Creep.prototype, 'target', {
 });
 
 Creep.prototype.chooseSource = function () {
-  return _.sortBy(this.room.getSources().filter(source => source.freeSpaceCount - source.creeps > 0), [
-    source => - source.energy / source.ticksToRegeneration
-  ])[0];
+  console.log('chooseSource');
+  return _.sortBy(
+    this.room.getSources().filter(source => source.freeSpaceCount - source.creeps > 0),
+    source => {
+      console.log('In Sort', source, - source.energy / (source.ticksToRegeneration || ENERGY_REGEN_TIME));
+      return - source.energy / (source.ticksToRegeneration || ENERGY_REGEN_TIME)
+    }
+  )[0];
 };
 
 Creep.prototype.getCreepController = function() {

@@ -32,10 +32,10 @@ Object.defineProperty(Source.prototype, 'freeSpaceCount', {
 
 Object.defineProperty(Source.prototype, 'creeps', {
   get: function () {
-    return this.memory.creeps || 0;
-  },
-  set: function (value) {
-    this.memory.creeps = value;
+    if (this._creeps === undefined) {
+      this._creeps = (this.room.creeps || []).filter(creep => creep.target === this).length;
+    }
+    return this._creeps;
   },
   enumerable: false,
   configurable: true

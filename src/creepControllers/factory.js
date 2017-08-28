@@ -1,17 +1,9 @@
-class CreepControllerFactory {
-  constructor() {
-    this._roles = {};
-  }
+const CREEP_ROLES = require('../constants').CREEP_ROLES;
+const BaseControllerFactory = require('../baseFactory');
 
-  register(role, controller) {
-    this._roles[role] = controller;
-  }
+const factory = new BaseControllerFactory('Creep');
 
-  getInstance(creep) {
-    const Controller = this._roles[creep.memory.role];
-    if (!Controller) { throw new Error(`Controller for role ${creep.memory.role} is not registered`); }
-    return new Controller(creep);
-  }
-}
+factory.register(CREEP_ROLES.WORKER, require('./WorkerController'));
+factory.register(CREEP_ROLES.UPGRADER, require('./UpgraderController'));
 
-module.exports = new CreepControllerFactory();
+module.exports = factory;

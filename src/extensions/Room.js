@@ -48,18 +48,7 @@ Object.defineProperty(Room.prototype, 'spawns', {
   configurable: true
 });
 
-Object.defineProperty(Room.prototype, 'state', {
-  get: function() {
-    return this.memory.state || 'InitialDevelop';
-  },
-  set: function(state) {
-    console.log(`${this.name} goes for ${state}.`);
-    this.memory.state = state;
-  },
-  enumerable: false,
-  configurable: true
-});
 
 Room.prototype.getRoomController = function() {
-  return controllerFactory(this);
+  return controllerFactory.getInstance(this);
 };

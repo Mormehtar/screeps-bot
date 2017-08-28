@@ -1,52 +1,50 @@
 const BaseController = require('./BaseController');
-const creepControllerFactory = require('../creepControllers/factory');
-const WorkerController = require('../creepControllers/WorkerController');
+const constants = require('../constants');
+
+const WorkerBodyPArtsPriorities = {};
+WorkerBodyPArtsPriorities[CARRY] = 1;
+WorkerBodyPArtsPriorities[WORK] = 2;
+WorkerBodyPArtsPriorities[MOVE] = 3;
 
 class InitialDevelopController extends BaseController {
-  getSourcePower() {
-    if (!this._sourcePower) {
-      this._sourcePower = this.room.getSources()
-        .map(source => source.energyCapacity / ENERGY_REGEN_TIME)
-        .reduce((acc, source) => acc + source, 0);
+  getWorkerBody() {
+    if (!this._workerBody) {
+      const body = [];
+      const base = [CARRY, WORK, MOVE];
+      let leftEnergy = this.room.energyCapacityAvailable;
+      let i = 0;
+      while (leftEnergy >= BODYPART_COST[base[i]]) {
+        const bodyPart = base[i];
+        body.push(bodyPart);
+        leftEnergy -= BODYPART_COST[bodyPart];
+        i = (i + 1) % base.length;
+      }
+      this._workerBody = _.sortBy(body, bodyPart => WorkerBodyPArtsPriorities[bodyPart]);
+      this._workerBody.price = this.room.energyCapacityAvailable - leftEnergy;
     }
-    return this._sourcePower;
+    return this._workerBody;
   }
   getWorkerRole() {
-    if (!this._workerBody) {
-      const baseBlock = [MOVE, WORK, CARRY];
-      let price = baseBlock.reduce((acc, part) => acc + BODYPART_COST[part], 0);
-      let maxPrice = this.room.energyCapacityAvailable;
-      const crate = Math.floor(maxPrice / price);
-      this._workerBody = [].concat(
-        _.fill(new Array(crate), CARRY), _.fill(new Array(crate), WORK), _.fill(new Array(crate), MOVE)
-      );
-      this._workerPrice = price * crate;
-      this._upgradePower = crate;
-    }
+    const workerBody = this.getWorkerBody();
     return {
-      body: this._workerBody,
-      name: InitialDevelopController.ROLES.WORKER,
-      price: this._workerPrice,
-      upgradePower: this._upgradePower
+      body: workerBody,
+      name: constants.CREEP_ROLES.WORKER,
+      price: workerBody.price
     };
   }
   getNextRole(population, freeEnergy, building) {
     const workerRole = this.getWorkerRole();
     if (workerRole.price > freeEnergy) { return null; }
     const workers = (population[workerRole.name] || 0) + (building[workerRole.name] || 0);
-    if (workerRole.upgradePower * workers > this.getSourcePower() * InitialDevelopController.UPGRADE_COEFFICIENT) {
+    const totalFree = this.room.getSources().reduce((acc, source) => acc + source.freeSpaceCount, 0);
+    if (workers >= InitialDevelopController.BUILD_COEFFICIENT * totalFree) {
+      this.room.memory.role = constants.ROOM_STATES.UPGRADE_TO_2;
       return null;
     }
     return workerRole;
   }
 }
 
-InitialDevelopController.ROLES = {
-  WORKER: 'Worker'
-};
-
-creepControllerFactory.register(InitialDevelopController.ROLES.WORKER, WorkerController);
-
-InitialDevelopController.UPGRADE_COEFFICIENT = 1.5;
+InitialDevelopController.BUILD_COEFFICIENT = 1;
 
 module.exports = InitialDevelopController;

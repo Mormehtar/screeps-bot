@@ -1,8 +1,10 @@
-const InitialDevelopController = require('./InitialDevelopController');
+const ROOM_STATES = require('../constants').ROOM_STATES;
+const BaseControllerFactory = require('../baseFactory');
 
-module.exports = function(room) {
-  switch (room.state) {
-    case 'InitialDevelop': return new InitialDevelopController(room);
-    default: throw new Error(`State ${room.state} is not supported`);
-  }
-};
+const roomFactory = new BaseControllerFactory('Room');
+
+roomFactory.registerDefaultRole(ROOM_STATES.INITIAL_DEVELOP);
+roomFactory.register(ROOM_STATES.INITIAL_DEVELOP, require('./InitialDevelopController'));
+roomFactory.register(ROOM_STATES.UPGRADE_TO_2, require('./FirstUpgradeController'));
+
+module.exports = roomFactory;
