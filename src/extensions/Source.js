@@ -1,6 +1,6 @@
 const utils = require('../utils');
 
-utils.addMemory(Source);
+utils.addMemory(Source, 'Source');
 
 Object.defineProperty(Source.prototype, 'creeps', {
   get() { return this.memory._creeps || 0; },

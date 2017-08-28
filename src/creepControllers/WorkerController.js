@@ -67,10 +67,8 @@ WorkerController.prototype[WorkerController.getMethodForState(WorkerController.S
 WorkerController.prototype[WorkerController.getMethodForState(WorkerController.States.GoForEnergy)] = function () {
   if(!this.creep.target) {
     this.creep.target = this.creep.chooseSource();
-    if (!this.creep.target) {
-      return false;
-    }
-    this.creep.target.creeps += 1;
+    if (!this.creep.target) { return false; }
+    ++this.creep.target.creeps;
   }
   if(this.creep.pos.isNearTo(this.creep.target)) {
     this.creep.state = WorkerController.States.Harvest;
@@ -82,7 +80,7 @@ WorkerController.prototype[WorkerController.getMethodForState(WorkerController.S
 
 WorkerController.prototype[WorkerController.getMethodForState(WorkerController.States.Harvest)] = function () {
   if(this.creep.carry[RESOURCE_ENERGY] === this.creep.carryCapacity) {
-    this.creep.target.creeps -= 1;
+    --this.creep.target.creeps;
     this.creep.target = null;
     this.creep.state = this.chooseTarget();
     return true;

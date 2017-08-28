@@ -27,8 +27,8 @@ class InitialDevelopController extends BaseController {
       body: this._workerBody,
       name: InitialDevelopController.ROLES.WORKER,
       price: this._workerPrice,
-      upgradePower: this._upgradePower,
-    }
+      upgradePower: this._upgradePower
+    };
   }
   getNextRole(population, freeEnergy, building) {
     const workerRole = this.getWorkerRole();
