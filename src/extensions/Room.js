@@ -48,6 +48,17 @@ Object.defineProperty(Room.prototype, 'spawns', {
   configurable: true
 });
 
+Object.defineProperty(Room.prototype, 'hostileCreeps', {
+  get: function () {
+    if (!this._hostileCreeps) {
+      this._hostileCreeps = this.find(FIND_HOSTILE_CREEPS);
+    }
+    return this._hostileCreeps;
+  },
+  enumerable: false,
+  configurable: true
+});
+
 
 Room.prototype.getRoomController = function() {
   return controllerFactory.getInstance(this);

@@ -1,5 +1,12 @@
 const controllerFactory = require('../creepControllers/factory');
 
+Creep.prototype._constructor = Creep.prototype._constructor || Creep.prototype.constructor;
+
+Creep.prototype.constructor = function (args) {
+  Creep.prototype._constructor.apply(this, args);
+  Creep.prototype.hooks.forEach(hook => hook.apply(this));
+};
+
 Object.defineProperty(Creep.prototype, 'isFull', {
   get: function() {
       if (!this._isFull) {
@@ -47,11 +54,9 @@ Object.defineProperty(Creep.prototype, 'target', {
 });
 
 Creep.prototype.chooseSource = function () {
-  console.log('chooseSource');
   return _.sortBy(
     this.room.getSources().filter(source => source.freeSpaceCount - source.creeps > 0),
     source => {
-      console.log('In Sort', source, - source.energy / (source.ticksToRegeneration || ENERGY_REGEN_TIME));
       return - source.energy / (source.ticksToRegeneration || ENERGY_REGEN_TIME)
     }
   )[0];
@@ -60,3 +65,20 @@ Creep.prototype.chooseSource = function () {
 Creep.prototype.getCreepController = function() {
   return controllerFactory.getInstance(this);
 };
+
+Creep.prototype.checkAttacked = function () {
+  this._lastHits = this.memory.lastHits || this.hitsMax;
+  this.memory.lastHits = this.hits;
+};
+
+Object.defineProperty(Creep.prototype, 'attacked', {
+  get: function() {
+    return this._lastHits > this.hits;
+  },
+  enumerable: false,
+  configurable: true
+});
+
+Creep.prototype.hooks = [
+  Creep.prototype.checkAttacked
+];

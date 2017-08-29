@@ -1,3 +1,6 @@
+const constants = require('../constants');
+const Worker = require('../creeps/Worker');
+
 class BaseRoomController {
   constructor(room) {
     this.room = room;
@@ -14,6 +17,9 @@ class BaseRoomController {
     }
     return this.population;
   }
+  getWorkerRole() {
+    return Worker.getRole(this.room.energyCapacityAvailable, constants.CREEP_ROLES.WORKER);
+  }
   getNextRole() { throw new Error('Unimplemented'); }
   buildCreeps() {
     const population = this.calculatePopulation();
@@ -25,7 +31,7 @@ class BaseRoomController {
         const role = this.getNextRole(population, freeEnergy, building);
         if (role) {
           const spawn = unusedSpawns.pop();
-          spawn.createCreep(role.body, null, { role: role.name });
+          spawn.createCreep(role.body, null, Object.assign({ role: role.role }, role.data || {}));
           freeEnergy -= role.price;
           building[role.name] = (building[role.name] || 0) + 1;
         } else {
@@ -33,6 +39,9 @@ class BaseRoomController {
         }
       }
     }
+  }
+  checkAlert() {
+    return !!this.room.hostileCreeps.length;
   }
   run() {
     this.controlCreeps();

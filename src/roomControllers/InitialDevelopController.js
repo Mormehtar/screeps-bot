@@ -1,37 +1,7 @@
-const BaseController = require('./BaseController');
+const DevelopConreoller = require('./DevelopController');
 const constants = require('../constants');
 
-const WorkerBodyPArtsPriorities = {};
-WorkerBodyPArtsPriorities[CARRY] = 1;
-WorkerBodyPArtsPriorities[WORK] = 2;
-WorkerBodyPArtsPriorities[MOVE] = 3;
-
-class InitialDevelopController extends BaseController {
-  getWorkerBody() {
-    if (!this._workerBody) {
-      const body = [];
-      const base = [CARRY, WORK, MOVE];
-      let leftEnergy = this.room.energyCapacityAvailable;
-      let i = 0;
-      while (leftEnergy >= BODYPART_COST[base[i]]) {
-        const bodyPart = base[i];
-        body.push(bodyPart);
-        leftEnergy -= BODYPART_COST[bodyPart];
-        i = (i + 1) % base.length;
-      }
-      this._workerBody = _.sortBy(body, bodyPart => WorkerBodyPArtsPriorities[bodyPart]);
-      this._workerBody.price = this.room.energyCapacityAvailable - leftEnergy;
-    }
-    return this._workerBody;
-  }
-  getWorkerRole() {
-    const workerBody = this.getWorkerBody();
-    return {
-      body: workerBody,
-      name: constants.CREEP_ROLES.WORKER,
-      price: workerBody.price
-    };
-  }
+class InitialDevelopController extends DevelopConreoller {
   getNextRole(population, freeEnergy, building) {
     const workerRole = this.getWorkerRole();
     if (workerRole.price > freeEnergy) { return null; }

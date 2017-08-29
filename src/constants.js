@@ -3,10 +3,14 @@ module.exports = {
 
   ROOM_STATES: {
     INITIAL_DEVELOP: 'InitialDevelop',
-    UPGRADE_TO_2: 'UpgradeTo2'
+    UPGRADE_TO_2: 'UpgradeTo2',
+    ALERT: 'Alert'
   },
   CREEP_ROLES: {
     WORKER: 'Worker',
-    UPGRADER: 'Upgrader'
+    UPGRADER: 'Upgrader',
+    BRUTE: 'Brute',
+    ARCHER: 'Archer',
+    HEALER: 'Healer'
   }
 };
