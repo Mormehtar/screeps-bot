@@ -2,7 +2,7 @@ class BaseControllerFactory {
   constructor(name) {
     this._roles = {};
     this._name = name;
-    this._default;
+    this._default = undefined;
   }
 
   register(role, controller) {
