@@ -109,6 +109,18 @@ Object.defineProperty(Room.prototype, 'constructionSites', {
   configurable: true
 });
 
+Room.prototype.registerStorageAsStorage = function(obj, amount, priority) {
+  this._storageRequests = this._storageRequests || {};
+  this._storageRequests[priority] = this._storageRequests[priority] || [];
+  this._storageRequests[priority].push({ obj, amount });
+};
+
+Room.prototype.registerStorageAsSource = function(obj, amount, priority) {
+  this._storageSources = this._storageSources || {};
+  this._storageSources[priority] = this._storageSources[priority] || [];
+  this._storageSources[priority].push({ obj, amount });
+};
+
 Room.prototype.requestEnergy = function (obj, amount, priority) {
   this._energyRequests = this._energyRequests || {};
   this._energyRequests[priority] = this._energyRequests[priority] || [];
@@ -119,6 +131,12 @@ Room.prototype.requestWork = function (obj, amount, priority) {
   this._workRequests = this._workRequests || {};
   this._workRequests[priority] = this._workRequests[priority] || [];
   this._workRequests[priority].push({ obj, amount });
+};
+
+Room.prototype.requestRepair = function (obj, amount, priority) {
+  this._repairRequests = this._repairRequests || {};
+  this._repairRequests[priority] = this._repairRequests[priority] || [];
+  this._repairRequests[priority].push({ obj, amount });
 };
 
 // TODO Mind about circle links here.

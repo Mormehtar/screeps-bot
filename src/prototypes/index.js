@@ -1,1 +1,2 @@
 require('./Room');
+require('./Creep');
