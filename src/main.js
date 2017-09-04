@@ -1,7 +1,4 @@
-require('./extensions/Creep');
-require('./extensions/Room');
-require('./extensions/Source');
+require('./prototypes');
+const loop = require('./loop');
 
-module.exports.loop = function () {
-  Object.keys(Game.rooms).forEach(roomName => Game.rooms[roomName].getRoomController().run());
-};
+module.exports.loop = loop;
