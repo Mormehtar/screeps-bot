@@ -1,4 +1,5 @@
 const ROOM_STATES = require('../utils/constants').ROOM_STATES;
+const controllerFactory = require('../controllers/rooms');
 
 Room.prototype.getSources = function () {
   if (!this._sources) {
@@ -55,6 +56,78 @@ Object.defineProperty(Room.prototype, 'state', {
   },
   set: function (value) {
     this.memory.state = value;
+  },
+  enumerable: false,
+  configurable: true
+});
+
+Object.defineProperty(Room.prototype, 'structures', {
+  get: function () {
+    if(!Game._structuresByRoom) {
+      Game._structuresByRoom = {};
+      Object.keys(Game.structures).forEach(structureId => {
+        const structure = Game.structures[structureId];
+        const roomName = structure.room.name;
+        const type = structure.type;
+        let roomStructures = Game._structuresByRoom[roomName];
+        if(!roomStructures) {
+          roomStructures = Game._structuresByRoom[roomName] = {};
+        }
+        if(!roomStructures[type]) {
+          roomStructures[type] = [];
+        }
+        roomStructures[type].push(structure);
+      });
+    }
+    return Game._structuresByRoom[this.name];
+  },
+  enumerable: false,
+  configurable: true
+});
+
+Object.defineProperty(Room.prototype, 'constructionSites', {
+  get: function () {
+    if(!Game._constructionSites) {
+      Game._constructionSites = {};
+      Object.keys(Game.structures).forEach(structureId => {
+        const constructionSite = Game.constructionSites[structureId];
+        const roomName = constructionSite.room.name;
+        const type = constructionSite.structureType;
+        let roomStructures = Game._constructionSites[roomName];
+        if(!roomStructures) {
+          roomStructures = Game._constructionSites[roomName] = {};
+        }
+        if(!roomStructures[type]) {
+          roomStructures[type] = [];
+        }
+        roomStructures[type].push(constructionSite);
+      });
+    }
+    return Game._constructionSites[this.name];
+  },
+  enumerable: false,
+  configurable: true
+});
+
+Room.prototype.requestEnergy = function (obj, amount, priority) {
+  this._energyRequests = this._energyRequests || {};
+  this._energyRequests[priority] = this._energyRequests[priority] || [];
+  this._energyRequests[priority].push({ obj, amount });
+};
+
+Room.prototype.requestWork = function (obj, amount, priority) {
+  this._workRequests = this._workRequests || {};
+  this._workRequests[priority] = this._workRequests[priority] || [];
+  this._workRequests[priority].push({ obj, amount });
+};
+
+// TODO Mind about circle links here.
+Object.defineProperty(Room.prototype, 'controller', {
+  get() {
+    if (!this._controller) {
+      this._controller = controllerFactory(this);
+    }
+    return this._controller;
   },
   enumerable: false,
   configurable: true
