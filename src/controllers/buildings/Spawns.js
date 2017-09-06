@@ -8,14 +8,17 @@ class SpawnsController extends BaseController {
     this.type = STRUCTURE_SPAWN;
   }
   requestEnergy() {
+    const extensionsEnergy = this.room.structures[STRUCTURE_EXTENSION].reduce(
+      (acc, extension) => acc + extension.energy, 0
+    );
     this.spawns.forEach(spawn => {
       const toFill = spawn.energyCapacity - spawn.energy;
       if(spawn.energy < spawn.energyCapacity) {
         let priority = CONSTANTS.PRIORITIES.UNIMPORTANT;
-        const creepsToBuild = this.room.controller.getCreepsToBuild();
-        if (creepsToBuild.length) {
-          const creepsPrice = creepsToBuild.reduce((acc, creepData) => acc + creepData.price, 0);
-          if (creepsPrice > spawn.energy) {
+        const rolesToBuild = this.room.controllerObject.getRolesToBuild();
+        if (rolesToBuild.length) {
+          const unit = this.room.controllerObject.getCreepByRole(rolesToBuild[0]);
+          if (unit.price > spawn.energy + extensionsEnergy) {
             priority = CONSTANTS.PRIORITIES.IMPORTANT;
           }
         }
@@ -32,7 +35,8 @@ class SpawnsController extends BaseController {
       return spawns.filter(spawn => spawn.energy >= minPrice);
     }
 
-    const creepsToBuild = this.room.controller.getCreepsToBuild();
+    const rolesToBuild = this.room.controllerObject.getRolesToBuild();
+    const creepsToBuild = rolesToBuild.map(role => this.room.controllerObject.getCreepByRole(role));
     let extensionsEnergy = this.room.structures[STRUCTURE_EXTENSION].reduce(
       (acc, extension) => acc + extension.energy, 0
     );

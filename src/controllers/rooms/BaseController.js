@@ -1,11 +1,12 @@
 const BuildingsControllers = require('../buildings');
+const units = require('../../units');
 
 class BaseController {
   constructor(room) {
     this.room = room;
     this.buildingsControllers = BuildingsControllers.map(Controller => new Controller(room));
   }
-  getCreepsToBuild() { return []; }
+  getRolesToBuild() { return []; }
   getWholePopulation() {
     if (!this._population) {
       this._population = {};
@@ -31,6 +32,16 @@ class BaseController {
       return obj;
     }, {});
   }
+
+  getMaxEnergyForSpawn() {
+    return SPAWN_ENERGY_CAPACITY +
+      this.room.structures[STRUCTURE_EXTENSION].length * EXTENSION_ENERGY_CAPACITY[this.room.controller.level];
+  }
+
+  getCreepByRole(role) {
+    return units(role).getUnit({ maxPrice: this.getMaxEnergyForSpawn() });
+  }
+
   run() {
     this.buildingsControllers
       .forEach(Controller => (new Controller(this.room)).run());

@@ -156,12 +156,12 @@ Room.prototype.requestRepair = function (obj, amount, priority) {
 };
 
 // TODO Mind about circle links here.
-Object.defineProperty(Room.prototype, 'controller', {
+Object.defineProperty(Room.prototype, 'controllerObject', {
   get() {
-    if (!this._controller) {
-      this._controller = controllerFactory(this);
+    if (!this._controllerObject) {
+      this._controllerObject = controllerFactory(this);
     }
-    return this._controller;
+    return this._controllerObject;
   },
   enumerable: false,
   configurable: true

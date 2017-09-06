@@ -2,7 +2,7 @@ const BaseController = require('./BaseController');
 const CREEP_ROLES = require('../../utils/constants').CREEP_ROLES;
 
 class StartingRoom extends BaseController {
-  getCreepsToBuild() {
+  getRolesToBuild() {
     const target = this.getPopulationTarget();
     const population = this.getPopulationCounts();
     return target.filter(role => {
