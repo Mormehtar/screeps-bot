@@ -20,6 +20,6 @@ class Carrier extends BaseUnit {
 }
 
 Carrier.baseBody = [CARRY, MOVE];
-Carrier.minPrice = Carrier.baseBody.reduce((acc, part) => acc + BODYPART_COST[part], 0);
+Carrier.minPrice = Carrier.getPrice(Carrier.baseBody);
 
 module.exports = Carrier;

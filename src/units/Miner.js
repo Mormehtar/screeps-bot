@@ -37,6 +37,6 @@ class Miner extends BaseUnit {
 }
 
 Miner.baseBody = [CARRY, WORK, MOVE];
-Miner.minPrice = Miner.baseBody.reduce((acc, part) => acc + BODYPART_COST[part], 0);
+Miner.minPrice = Miner.getPrice(Miner.baseBody);
 
 module.exports = Miner;

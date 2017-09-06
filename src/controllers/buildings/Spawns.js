@@ -28,7 +28,7 @@ class SpawnsController extends BaseController {
     });
   }
   runSpecificActivity() {
-    function filterSpawns (spawns, minPrice) {
+    function filterSpawns(spawns, minPrice) {
       return spawns.filter(spawn => spawn.energy >= minPrice);
     }
 

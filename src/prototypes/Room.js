@@ -52,7 +52,7 @@ Object.defineProperty(Room.prototype, 'spawns', {
 
 Object.defineProperty(Room.prototype, 'state', {
   get: function () {
-    return this.memory.state || ROOM_STATES.INITIAL
+    return this.memory.state || ROOM_STATES.STARTING
   },
   set: function (value) {
     this.memory.state = value;
@@ -80,6 +80,22 @@ Object.defineProperty(Room.prototype, 'structures', {
       });
     }
     return Game._structuresByRoom[this.name];
+  },
+  enumerable: false,
+  configurable: true
+});
+
+Object.defineProperty(Room.prototype, 'damagedStructuresCount', {
+  get: function () {
+    if (this._damagedStructures === undefined) {
+      this._damagedStructures = Object.keys(this.structures)
+        .reduce(
+          (acc, key) => acc + this.structures[key]
+            .reduce((acc, structure) => (structure.hitsMax > structure.hits ? acc + 1 : acc), 0),
+          0
+        );
+    }
+    return this._damagedStructures;
   },
   enumerable: false,
   configurable: true

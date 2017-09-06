@@ -1,5 +1,5 @@
 module.exports.ROOM_STATES = {
-  INITIAL: 'Initial'
+  STARTING: 'Starting'
 };
 
 module.exports.CREEP_ROLES = {

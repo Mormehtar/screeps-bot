@@ -32,7 +32,9 @@ class Controller {
     );
   }
   runSpecificActivity() {}
+  hasSense() { return true; }
   run() {
+    if(!this.hasSense()) { return; }
     this.orderConstruction();
     this.requestEnergy();
     this.requestWork();
