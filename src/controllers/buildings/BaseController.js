@@ -9,6 +9,7 @@ class Controller {
   }
   orderConstruction() {}
   requestEnergy() {}
+  requestHarvest() {}
   requestWork() {
     this.room.constructionSites[this.type].forEach(
       site => this.room.requestWork(
@@ -36,6 +37,7 @@ class Controller {
   run() {
     if(!this.hasSense()) { return; }
     this.orderConstruction();
+    this.requestHarvest();
     this.requestEnergy();
     this.requestWork();
     this.requestRepair();

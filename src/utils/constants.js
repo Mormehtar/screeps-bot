@@ -9,6 +9,11 @@ module.exports.CREEP_ROLES = {
   REPAIRER: 'Repairer'
 };
 
+module.exports.CREEP_STATES = {
+  GO_HARVEST: 'Go Harvest',
+  HARVEST: 'Harvest'
+};
+
 module.exports.PRIORITIES = {
   TOP: 0,
   URGENT: 100,

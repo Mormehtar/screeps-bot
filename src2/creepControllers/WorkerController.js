@@ -83,7 +83,7 @@ WorkerController.prototype[WorkerController.getMethodForState(WorkerController.S
     this.creep.state = this.chooseTarget();
     return true;
   }
-  this.creep.harvest(this.creep.target);
+  this.creep.goHarvest(this.creep.target);
   return false;
 };
 

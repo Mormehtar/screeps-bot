@@ -1,6 +1,6 @@
 class BaseController {
   constructor(creep) {
-    this.room = creep;
+    this.creep = creep;
   }
   run() {}
 }

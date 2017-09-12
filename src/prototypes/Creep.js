@@ -22,3 +22,23 @@ Object.defineProperty(Creep.prototype, 'role', {
   enumerable: false,
   configurable: true
 });
+
+Object.defineProperty(Creep.prototype, 'state', {
+  get: function () {
+    return this.memory.state
+  },
+  set: function (value) {
+    this.memory.state = value;
+  },
+  enumerable: false,
+  configurable: true
+});
+
+Creep.prototype.chooseSource = function () {
+  return _.sortBy(
+    this.room.getSources().filter(source => source.freeSpaceCount - source.creeps > 0),
+    source => {
+      return - source.energy / (source.ticksToRegeneration || ENERGY_REGEN_TIME)
+    }
+  )[0];
+};
